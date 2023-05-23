@@ -14,10 +14,10 @@ export class StoreService {
 
   async createStore(createStoreDto: CreateStoreDto): Promise<IStore> {
     const store = await this.storeModel.create(createStoreDto);
-    return store.save();
+    return store.save({ validateBeforeSave: true });
   }
 
   async findAll(): Promise<IStore[]> {
-    return this.storeModel.find().exec();
+    return this.storeModel.find({}, '-createdAt -updatedAt').exec();
   }
 }
