@@ -1,6 +1,10 @@
+import { IsArray, IsNotEmpty, IsString } from 'class-validator';
 import { IProduct } from '../../../interfaces/product.interface';
-
 export class CreateStoreDto {
+  @IsString()
+  @IsNotEmpty()
   readonly name: string;
-  readonly products: IProduct[];
+
+  @IsArray()
+  readonly products?: IProduct[];
 }
