@@ -1,6 +1,6 @@
 import { Mongoose } from 'mongoose';
 import { DB_PROVIDER, STORE_PROVIDER } from '../../../config/providers';
-import { StoreSchema } from '../../../schemas/store.schema';
+import { StoreSchema } from '../schemas/store.schema';
 
 export const productProvider = [
   {

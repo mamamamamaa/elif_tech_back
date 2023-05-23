@@ -1,4 +1,4 @@
-import { IProduct } from '../interfaces/product.interface';
+import { IProduct } from '../../../interfaces/product.interface';
 
 export class CreateStoreDto {
   readonly name: string;

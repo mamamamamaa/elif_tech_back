@@ -3,7 +3,7 @@ import { PRODUCT_PROVIDER, STORE_PROVIDER } from '../../config/providers';
 import { Model } from 'mongoose';
 import { IStore } from '../../interfaces/store.interface';
 import { IProduct } from '../../interfaces/product.interface';
-import { CreateStoreDto } from '../../dto/store.dto';
+import { CreateStoreDto } from './dto/store.dto';
 
 @Injectable()
 export class StoreService {
