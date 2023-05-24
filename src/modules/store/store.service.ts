@@ -17,6 +17,15 @@ export class StoreService {
     return await store.save();
   }
 
+  async removeStore(id: string) {
+    return this.storeModel.deleteOne(
+      { _id: id },
+      {
+        projection: '-createdAt -updatedAt',
+      },
+    );
+  }
+
   async findStoreById(id: string): Promise<IStore> {
     const res = await this.storeModel.findById(id, '-createdAt -updatedAt');
 

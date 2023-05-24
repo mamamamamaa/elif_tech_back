@@ -1,9 +1,16 @@
-import { Schema } from 'mongoose';
+import { model, Schema } from 'mongoose';
 
-export const StoreSchema: Schema = new Schema(
+const StoreSchema: Schema = new Schema(
   {
     name: { type: String, required: true, unique: true },
     products: [{ type: Schema.Types.ObjectId, ref: 'Product', default: [] }],
   },
   { versionKey: false, timestamps: true },
 );
+
+StoreSchema.pre('deleteOne', async function (next) {
+  await model('Product').deleteMany({ store: this.getQuery()._id });
+  next();
+});
+
+export { StoreSchema };
