@@ -3,13 +3,13 @@ export interface IOrder {
   readonly email: string;
   readonly phone: string;
   readonly address: string;
-  readonly storeId: string;
+  readonly store: string;
   readonly totalPrice: number;
   readonly products: OrderProduct[];
 }
 
 export interface OrderProduct {
-  readonly productId: string;
-  readonly storeId: string;
-  readonly quantity: number;
+  readonly product: string;
+  readonly store: string;
+  readonly takenQuantity: number;
 }

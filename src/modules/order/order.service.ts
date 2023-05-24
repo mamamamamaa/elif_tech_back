@@ -8,9 +8,9 @@ import { IOrder } from './interfaces/order.interface';
 export class OrderService {
   constructor(@Inject(ORDER_PROVIDER) private orderModel: Model<IOrder>) {}
 
-  checkProductsStoreId({ storeId, products }: CreateOrderDto) {
+  checkProductsStoreId({ store: id, products }: CreateOrderDto) {
     for (let i = 0; i < products.length; i++) {
-      if (products[i].storeId !== storeId) {
+      if (products[i].store !== id) {
         return false;
       }
     }
@@ -25,7 +25,7 @@ export class OrderService {
   async getUserOrder(getUserOrderDto: GetUserOrderDto) {
     return this.orderModel
       .find(getUserOrderDto, '-createdAt -updatedAt')
-      .populate('products.productId', '-createdAt -updatedAt')
-      .populate('storeId', '-createdAt -updatedAt');
+      .populate('products.product', '-createdAt -updatedAt')
+      .populate('store', '-createdAt -updatedAt');
   }
 }

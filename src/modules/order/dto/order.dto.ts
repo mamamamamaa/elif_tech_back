@@ -11,7 +11,7 @@ export class CreateOrderDto {
   @IsString()
   readonly address: string;
   @IsString()
-  readonly storeId: string;
+  readonly store: string;
   @IsArray()
   readonly products: OrderProduct[];
   @IsNumber()

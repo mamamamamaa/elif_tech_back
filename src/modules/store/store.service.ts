@@ -87,22 +87,20 @@ export class StoreService {
     session.startTransaction();
 
     try {
-      for (const { productId, quantity } of products) {
-        const product = await this.productModel
-          .findById(productId)
-          .session(session);
+      for (const { product: id, takenQuantity } of products) {
+        const product = await this.productModel.findById(id).session(session);
 
         if (!product) {
-          throw new NotFoundException(`Product with ID ${productId} not found`);
+          throw new NotFoundException(`Product with ID ${id} not found`);
         }
 
-        if (product.quantity < quantity) {
+        if (product.quantity < takenQuantity) {
           throw new BadRequestException(
-            `Insufficient quantity for product with ID ${productId}`,
+            `Insufficient quantity for product with ID ${id}`,
           );
         }
 
-        product.quantity -= quantity;
+        product.quantity -= takenQuantity;
         await product.save();
       }
 
