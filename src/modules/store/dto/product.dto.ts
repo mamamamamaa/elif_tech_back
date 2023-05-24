@@ -1,6 +1,6 @@
 import { IsNumber, IsString } from 'class-validator';
 
-export class ProductDto {
+export class CreateProductDto {
   @IsString()
   readonly name: string;
   @IsNumber()

@@ -3,7 +3,7 @@ import { PRODUCT_PROVIDER, STORE_PROVIDER } from '../../config/providers';
 import { Model } from 'mongoose';
 import { IStore } from '../../interfaces/store.interface';
 import { IProduct } from '../../interfaces/product.interface';
-import { CreateStoreDto, FindStoreByNameDto } from './dto/store.dto';
+import { CreateProductDto } from './dto/product.dto';
 
 @Injectable()
 export class StoreService {
@@ -12,16 +12,13 @@ export class StoreService {
     @Inject(PRODUCT_PROVIDER) private productModel: Model<IProduct>,
   ) {}
 
-  async createStore(createStoreDto: CreateStoreDto): Promise<IStore> {
-    const store = await this.storeModel.create(createStoreDto);
-    return store.save({ validateBeforeSave: true });
+  async createNewStore(name: string): Promise<IStore> {
+    const store: IStore = new this.storeModel({ name });
+    return await store.save();
   }
 
-  async findStoreByName({ name }: FindStoreByNameDto) {
-    const res = await this.storeModel.findOne(
-      { name },
-      '-createdAt -updatedAt',
-    );
+  async findStoreById(id: string): Promise<IStore> {
+    const res = await this.storeModel.findById(id, '-createdAt -updatedAt');
 
     if (!res) {
       throw new HttpException('Store not found', HttpStatus.NOT_FOUND);
@@ -32,5 +29,23 @@ export class StoreService {
 
   async findAll(): Promise<IStore[]> {
     return this.storeModel.find({}, '-createdAt -updatedAt').exec();
+  }
+
+  async createNewProduct(
+    store: IStore,
+    createProductDto: CreateProductDto,
+  ): Promise<IProduct> {
+    const product: IProduct = new this.productModel({
+      ...createProductDto,
+      store: store._id,
+    });
+
+    const savedProduct: IProduct = await product.save();
+
+    store.products.push(savedProduct._id);
+
+    await store.save();
+
+    return savedProduct;
   }
 }
