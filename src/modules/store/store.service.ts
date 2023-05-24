@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 import { IStore } from './interfaces/store.interface';
 import { IProduct } from './interfaces/product.interface';
 import { CreateProductDto } from './dto/product.dto';
+import { CreateStoreDto } from './dto/store.dto';
 
 @Injectable()
 export class StoreService {
@@ -12,8 +13,8 @@ export class StoreService {
     @Inject(PRODUCT_PROVIDER) private productModel: Model<IProduct>,
   ) {}
 
-  async createNewStore(name: string): Promise<IStore> {
-    const store: IStore = new this.storeModel({ name });
+  async createNewStore(createStoreDto: CreateStoreDto): Promise<IStore> {
+    const store: IStore = new this.storeModel(createStoreDto);
     return await store.save();
   }
 
@@ -56,7 +57,6 @@ export class StoreService {
     });
 
     const savedProduct: IProduct = await product.save();
-
     store.products.push(savedProduct._id);
 
     await store.save();

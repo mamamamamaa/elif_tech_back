@@ -14,9 +14,7 @@ export class StoreController {
 
   @Post()
   async createStore(@Body() dto: CreateStoreDto) {
-    const { name } = dto;
-
-    const newStore = await this.storeService.createNewStore(name);
+    const newStore = await this.storeService.createNewStore(dto);
 
     return { store: newStore };
   }

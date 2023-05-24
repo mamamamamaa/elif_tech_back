@@ -10,6 +10,8 @@ export class CreateOrderDto {
   readonly phone: string;
   @IsString()
   readonly address: string;
+  @IsString()
+  readonly storeId: string;
   @IsArray()
   readonly products: OrderProduct[];
   @IsNumber()
