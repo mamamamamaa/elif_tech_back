@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CreateOrderDto, GetUserOrderDtp } from './dto/order.dto';
+import { CreateOrderDto, GetUserOrderDto } from './dto/order.dto';
 import { ORDER_PROVIDER } from '../../config/providers';
 import { Model } from 'mongoose';
 import { IOrder } from './interfaces/order.interface';
@@ -22,7 +22,10 @@ export class OrderService {
     return this.orderModel.create(createOrderDto);
   }
 
-  async getUserOrder(getUserOrderDtp: GetUserOrderDtp) {
-    return this.orderModel.find(getUserOrderDtp, '-createdAt -updatedAt');
+  async getUserOrder(getUserOrderDto: GetUserOrderDto) {
+    return this.orderModel
+      .find(getUserOrderDto, '-createdAt -updatedAt')
+      .populate('products.productId', '-createdAt -updatedAt')
+      .populate('storeId', '-createdAt -updatedAt');
   }
 }

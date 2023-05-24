@@ -18,7 +18,7 @@ export class CreateOrderDto {
   readonly totalPrice: number;
 }
 
-export class GetUserOrderDtp {
+export class GetUserOrderDto {
   @IsString()
   readonly phone: string;
   @IsString()

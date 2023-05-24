@@ -5,7 +5,7 @@ import {
   HttpStatus,
   Post,
 } from '@nestjs/common';
-import { CreateOrderDto } from './dto/order.dto';
+import { CreateOrderDto, GetUserOrderDto } from './dto/order.dto';
 import { StoreService } from '../store/store.service';
 import { OrderService } from './order.service';
 
@@ -29,6 +29,11 @@ export class OrderController {
 
     await this.storeService.changeQuantity(orderDto.products);
 
-    return { message: 'succyess' };
+    return await this.orderService.createOrder(orderDto);
+  }
+
+  @Post('get')
+  async getUserOrder(@Body() dto: GetUserOrderDto) {
+    return await this.orderService.getUserOrder(dto);
   }
 }
