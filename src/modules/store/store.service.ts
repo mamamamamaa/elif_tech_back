@@ -5,6 +5,7 @@ import { IStore } from './interfaces/store.interface';
 import { IProduct } from './interfaces/product.interface';
 import { CreateProductDto } from './dto/product.dto';
 import { CreateStoreDto } from './dto/store.dto';
+import { OrderProduct } from '../order/interfaces/order.interface';
 
 @Injectable()
 export class StoreService {
@@ -72,5 +73,16 @@ export class StoreService {
     await store.save();
 
     return savedProduct;
+  }
+
+  async changeQuantity(products: OrderProduct[]) {
+    const bulkOperations = products.map(({ productId, quantity }) => ({
+      updateOne: {
+        filter: { _id: productId },
+        update: { $inc: { quantity: -quantity } },
+      },
+    }));
+
+    return await this.productModel.bulkWrite(bulkOperations);
   }
 }
