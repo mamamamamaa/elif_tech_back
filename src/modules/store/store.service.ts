@@ -107,11 +107,11 @@ export class StoreService {
       }
 
       await session.commitTransaction();
-      session.endSession();
     } catch (error) {
       await session.abortTransaction();
-      session.endSession();
-      throw error;
+      throw new HttpException(error.message, HttpStatus.CONFLICT);
+    } finally {
+      await session.endSession();
     }
   }
 }

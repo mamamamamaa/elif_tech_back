@@ -17,3 +17,10 @@ export class CreateOrderDto {
   @IsNumber()
   readonly totalPrice: number;
 }
+
+export class GetUserOrderDtp {
+  @IsString()
+  readonly phone: string;
+  @IsString()
+  readonly email: string;
+}
