@@ -43,8 +43,18 @@ export class StoreService {
     return res;
   }
 
-  async findAll(): Promise<IStore[]> {
+  async findAllStores(): Promise<IStore[]> {
     return this.storeModel.find({}, '-createdAt -updatedAt').exec();
+  }
+
+  async findAllProducts(): Promise<IProduct[]> {
+    return this.productModel.find({}, '-createdAt -updatedAt').exec();
+  }
+
+  async findStoreProducts(storeId: string): Promise<IProduct[]> {
+    return this.productModel
+      .find({ store: storeId }, '-createdAt -updatedAt')
+      .exec();
   }
 
   async createNewProduct(

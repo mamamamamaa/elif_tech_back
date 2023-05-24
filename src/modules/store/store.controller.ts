@@ -9,7 +9,17 @@ export class StoreController {
 
   @Get()
   getAllStores() {
-    return this.storeService.findAll();
+    return this.storeService.findAllStores();
+  }
+
+  @Get('products')
+  getAllProducts() {
+    return this.storeService.findAllProducts();
+  }
+
+  @Get(':storeId/products')
+  getStoreProducts(@Param('storeId') storeId: string) {
+    return this.storeService.findStoreProducts(storeId);
   }
 
   @Post()
