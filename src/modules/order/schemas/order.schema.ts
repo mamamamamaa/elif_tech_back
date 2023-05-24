@@ -7,6 +7,7 @@ export const OrderSchema: Schema = new Schema(
     phone: { type: String, required: true },
     address: { type: String, required: true },
     products: { type: Array, required: true },
+    totalPrice: { type: Number, required: true },
   },
   { versionKey: false, timestamps: true },
 );

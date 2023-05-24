@@ -40,4 +40,9 @@ export class StoreController {
   async removeStore(@Param('storeId') storeId: string) {
     return this.storeService.removeStore(storeId);
   }
+
+  @Delete('product/:productId')
+  async removeProduct(@Param('productId') productId: string) {
+    return this.storeService.removeProduct(productId);
+  }
 }

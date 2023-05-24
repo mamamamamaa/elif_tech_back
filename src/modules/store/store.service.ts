@@ -1,8 +1,8 @@
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { PRODUCT_PROVIDER, STORE_PROVIDER } from '../../config/providers';
 import { Model } from 'mongoose';
-import { IStore } from '../../interfaces/store.interface';
-import { IProduct } from '../../interfaces/product.interface';
+import { IStore } from './interfaces/store.interface';
+import { IProduct } from './interfaces/product.interface';
 import { CreateProductDto } from './dto/product.dto';
 
 @Injectable()
@@ -24,6 +24,12 @@ export class StoreService {
         projection: '-createdAt -updatedAt',
       },
     );
+  }
+
+  async removeProduct(id: string) {
+    return this.productModel.findByIdAndRemove(id, {
+      projection: '-createdAt -updatedAt',
+    });
   }
 
   async findStoreById(id: string): Promise<IStore> {
