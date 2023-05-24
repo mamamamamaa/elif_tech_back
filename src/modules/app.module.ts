@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { DatabaseModule } from './database/database.module';
 import { ConfigModule } from '@nestjs/config';
 import { StoreModule } from './store/store.module';
+import { OrderModule } from './order/order.module';
 import configuration from '../config/configuration';
 
 @Module({
@@ -11,6 +11,7 @@ import configuration from '../config/configuration';
       load: [configuration],
     }),
     StoreModule,
+    OrderModule,
   ],
   controllers: [],
 })

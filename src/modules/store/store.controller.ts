@@ -1,6 +1,6 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { StoreService } from './store.service';
-import { CreateStoreDto } from './dto/store.dto';
+import { CreateStoreDto, FindStoreByNameDto } from './dto/store.dto';
 
 @Controller('store')
 export class StoreController {
@@ -8,6 +8,11 @@ export class StoreController {
   @Post()
   createStore(@Body() dto: CreateStoreDto) {
     return this.storeService.createStore(dto);
+  }
+
+  @Get('find')
+  findStore(@Query() dto: FindStoreByNameDto) {
+    return this.storeService.findStoreByName(dto);
   }
 
   @Get()

@@ -8,3 +8,9 @@ export class CreateStoreDto {
   @IsArray()
   readonly products?: IProduct[];
 }
+
+export class FindStoreByNameDto {
+  @IsString()
+  @IsNotEmpty()
+  readonly name: string;
+}
