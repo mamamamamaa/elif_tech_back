@@ -1,4 +1,11 @@
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PRODUCT_PROVIDER, STORE_PROVIDER } from '../../config/providers';
 import { Model } from 'mongoose';
 import { IStore } from './interfaces/store.interface';
@@ -76,13 +83,35 @@ export class StoreService {
   }
 
   async changeQuantity(products: OrderProduct[]) {
-    const bulkOperations = products.map(({ productId, quantity }) => ({
-      updateOne: {
-        filter: { _id: productId },
-        update: { $inc: { quantity: -quantity } },
-      },
-    }));
+    const session = await this.productModel.db.startSession();
+    session.startTransaction();
 
-    return await this.productModel.bulkWrite(bulkOperations);
+    try {
+      for (const { productId, quantity } of products) {
+        const product = await this.productModel
+          .findById(productId)
+          .session(session);
+
+        if (!product) {
+          throw new NotFoundException(`Product with ID ${productId} not found`);
+        }
+
+        if (product.quantity < quantity) {
+          throw new BadRequestException(
+            `Insufficient quantity for product with ID ${productId}`,
+          );
+        }
+
+        product.quantity -= quantity;
+        await product.save();
+      }
+
+      await session.commitTransaction();
+      session.endSession();
+    } catch (error) {
+      await session.abortTransaction();
+      session.endSession();
+      throw error;
+    }
   }
 }
