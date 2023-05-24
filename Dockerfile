@@ -12,4 +12,4 @@ RUN npm run build
 
 EXPOSE 9999
 
-CMD ["node", "dist/main.ts"]
+CMD ["node", "dist/main.js"]
