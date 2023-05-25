@@ -52,7 +52,10 @@ export class StoreService {
   }
 
   async findAllStores(): Promise<IStore[]> {
-    return this.storeModel.find({}, '-createdAt -updatedAt').exec();
+    return this.storeModel
+      .find({}, '-createdAt -updatedAt')
+      .populate('products', '-createdAt -updatedAt')
+      .exec();
   }
 
   async findAllProducts(): Promise<IProduct[]> {
@@ -62,6 +65,7 @@ export class StoreService {
   async findStoreProducts(storeId: string): Promise<IProduct[]> {
     return this.productModel
       .find({ store: storeId }, '-createdAt -updatedAt')
+      .populate('products', '-createdAt -updatedAt')
       .exec();
   }
 
